@@ -8,14 +8,19 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var users: [GitHub.User] = []
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        List(users) { user in
+            UserCell(user: user)
+        }.task {
+            do {
+                users = try await GitHub().getUsers()
+            } catch {
+                
+            }
         }
-        .padding()
     }
 }
 

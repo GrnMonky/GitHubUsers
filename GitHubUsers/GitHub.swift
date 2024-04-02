@@ -9,12 +9,13 @@ import Foundation
 
 struct GitHub {
     
-    struct User: Codable {
+    struct User: Codable, Identifiable {
         let login: String
         let avatarURL: String?
+        let id: Int
 
         private enum CodingKeys: String, CodingKey {
-            case login
+            case login, id
             case avatarURL = "avatar_url"
         }
     }
