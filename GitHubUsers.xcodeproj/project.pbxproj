@@ -14,6 +14,7 @@
 		EB85EDBC2BBC23AF00305545 /* GitHubUsersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDBB2BBC23AF00305545 /* GitHubUsersTests.swift */; };
 		EB85EDC62BBC23B000305545 /* GitHubUsersUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDC52BBC23B000305545 /* GitHubUsersUITests.swift */; };
 		EB85EDC82BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDC72BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift */; };
+		EB85EDD52BBC241E00305545 /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDD42BBC241E00305545 /* GitHub.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		EB85EDC12BBC23B000305545 /* GitHubUsersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubUsersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB85EDC52BBC23B000305545 /* GitHubUsersUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsersUITests.swift; sourceTree = "<group>"; };
 		EB85EDC72BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsersUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		EB85EDD42BBC241E00305545 /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +100,7 @@
 				EB85EDAC2BBC23AD00305545 /* ContentView.swift */,
 				EB85EDAE2BBC23AF00305545 /* Assets.xcassets */,
 				EB85EDB02BBC23AF00305545 /* Preview Content */,
+				EB85EDD42BBC241E00305545 /* GitHub.swift */,
 			);
 			path = GitHubUsers;
 			sourceTree = "<group>";
@@ -257,6 +260,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EB85EDD52BBC241E00305545 /* GitHub.swift in Sources */,
 				EB85EDAD2BBC23AD00305545 /* ContentView.swift in Sources */,
 				EB85EDAB2BBC23AD00305545 /* GitHubUsersApp.swift in Sources */,
 			);
