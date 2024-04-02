@@ -16,6 +16,7 @@
 		EB85EDC82BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDC72BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift */; };
 		EB85EDD52BBC241E00305545 /* GitHub.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDD42BBC241E00305545 /* GitHub.swift */; };
 		EB85EDD92BBC280800305545 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDD82BBC280800305545 /* UserCell.swift */; };
+		EB85EDDB2BBC2FDA00305545 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +49,7 @@
 		EB85EDC72BBC23B000305545 /* GitHubUsersUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsersUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		EB85EDD42BBC241E00305545 /* GitHub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHub.swift; sourceTree = "<group>"; };
 		EB85EDD82BBC280800305545 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
+		EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDetails.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -104,6 +106,7 @@
 				EB85EDB02BBC23AF00305545 /* Preview Content */,
 				EB85EDD42BBC241E00305545 /* GitHub.swift */,
 				EB85EDD82BBC280800305545 /* UserCell.swift */,
+				EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */,
 			);
 			path = GitHubUsers;
 			sourceTree = "<group>";
@@ -267,6 +270,7 @@
 				EB85EDD52BBC241E00305545 /* GitHub.swift in Sources */,
 				EB85EDAD2BBC23AD00305545 /* ContentView.swift in Sources */,
 				EB85EDAB2BBC23AD00305545 /* GitHubUsersApp.swift in Sources */,
+				EB85EDDB2BBC2FDA00305545 /* UserDetails.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

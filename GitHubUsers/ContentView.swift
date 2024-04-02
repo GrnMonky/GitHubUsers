@@ -12,13 +12,17 @@ struct ContentView: View {
     @State private var users: [GitHub.User] = []
     
     var body: some View {
-        List(users) { user in
-            UserCell(user: user)
-        }.task {
-            do {
-                users = try await GitHub().getUsers()
-            } catch {
-                
+        NavigationView {
+            List(users) { user in
+                NavigationLink(destination: UserDetails(user: user)) {
+                    UserCell(user: user)
+                }
+            }.task {
+                do {
+                    users = try await GitHub().getUsers()
+                } catch {
+                    
+                }
             }
         }
     }
