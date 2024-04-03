@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State private var users: [GitHub.User] = []
+    @State private var users: [GitHub.ListUser] = []
     
     var body: some View {
         NavigationView {

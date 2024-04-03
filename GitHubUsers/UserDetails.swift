@@ -9,7 +9,7 @@ import SwiftUI
 
 struct UserDetails: View {
     
-    let user: GitHub.User
+    @State var user: GitHub.User
     
     var body: some View {
         VStack {
@@ -22,11 +22,24 @@ struct UserDetails: View {
             .frame(width: 100, height: 100)
             .clipShape(Circle())
             Text(user.login)
+            if let details = user as? GitHub.DeatailedUser {
+                Text(details.name ?? "")
+                Text("Followers: \(details.followers)")
+                Text("Following: \(details.following)")
+            }
             Spacer()
-        }.padding()
+        }.padding().task {
+            do {
+                if !(user is GitHub.DeatailedUser) {
+                    self.user = try await GitHub().getDeatailedUser(login: user.login)
+                }
+            } catch {
+                
+            }
+        }
     }
 }
 
 #Preview {
-    UserDetails(user: GitHub.User(login: "Landon", avatarURL: "https://via.placeholder.com/100x100", id: 1))
+    UserDetails(user: GitHub.ListUser(login: "octocat", avatarURL: "https://via.placeholder.com/100x100", id: 1))
 }

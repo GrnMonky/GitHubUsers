@@ -27,5 +27,8 @@ struct UserCell: View {
 }
 
 #Preview {
-    UserCell(user: GitHub.User(login: "Landon", avatarURL: "https://via.placeholder.com/50x50", id: 1))
+    VStack {
+        UserCell(user: GitHub.ListUser(login: "octocat", avatarURL: "https://via.placeholder.com/50x50", id: 1))
+        Spacer()
+    }
 }
