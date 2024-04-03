@@ -69,4 +69,22 @@ final class GitHubUsersTests: XCTestCase {
         wait(for: [expectation], timeout: 10.0) // Adjust the timeout as needed
     }
     
+    func testGetReposFromGitHub() {
+        let expectation = XCTestExpectation(description: "Fetch users from GitHub")
+        
+        Task.init {
+            do {
+                let repos = try await GitHub().getRepos(login: "octocat")
+                XCTAssertNotNil(repos, "User should not be nil")
+                XCTAssertTrue(repos.count > 0, "There should be at least one user")
+            } catch {
+                XCTFail("Error fetching users: \(error)")
+            }
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 10.0) // Adjust the timeout as needed
+    }
+    
 }

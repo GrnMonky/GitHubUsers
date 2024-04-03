@@ -33,4 +33,8 @@ extension GitHub {
         return try await fromURLSession("\(GitHubUrl)/\(login)")
     }
     
+    func getRepos(login: String) async throws -> [Repo] {
+        return try await fromURLSession("\(GitHubUrl)/\(login)/repos")
+    }
+    
 }

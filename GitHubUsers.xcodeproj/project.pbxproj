@@ -17,7 +17,9 @@
 		EB85EDD92BBC280800305545 /* UserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDD82BBC280800305545 /* UserCell.swift */; };
 		EB85EDDB2BBC2FDA00305545 /* UserDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */; };
 		EBC71E9E2BBCE06B0052F28B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB85EDAC2BBC23AD00305545 /* Home.swift */; };
-		EBC71EA02BBD0A050052F28B /* GitHubUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC71E9F2BBD0A050052F28B /* GitHubUsers.swift */; };
+		EBC71EA02BBD0A050052F28B /* GitHubModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC71E9F2BBD0A050052F28B /* GitHubModels.swift */; };
+		EBC9C6E32BBD3CB40029BC26 /* RepoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC9C6E22BBD3CB40029BC26 /* RepoCell.swift */; };
+		EBC9C6E52BBD4BAB0029BC26 /* WebView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBC9C6E42BBD4BAB0029BC26 /* WebView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -52,7 +54,9 @@
 		EB85EDD82BBC280800305545 /* UserCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCell.swift; sourceTree = "<group>"; };
 		EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = UserDetails.swift; path = GitHubUsers/UserDetails.swift; sourceTree = SOURCE_ROOT; };
 		EBC71E952BBCBAEC0052F28B /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		EBC71E9F2BBD0A050052F28B /* GitHubUsers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubUsers.swift; sourceTree = "<group>"; };
+		EBC71E9F2BBD0A050052F28B /* GitHubModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GitHubModels.swift; sourceTree = "<group>"; };
+		EBC9C6E22BBD3CB40029BC26 /* RepoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepoCell.swift; sourceTree = "<group>"; };
+		EBC9C6E42BBD4BAB0029BC26 /* WebView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,7 +154,7 @@
 		EBC71E982BBCBD8E0052F28B /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				EBC71E9F2BBD0A050052F28B /* GitHubUsers.swift */,
+				EBC71E9F2BBD0A050052F28B /* GitHubModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -161,6 +165,8 @@
 				EB85EDAC2BBC23AD00305545 /* Home.swift */,
 				EB85EDD82BBC280800305545 /* UserCell.swift */,
 				EB85EDDA2BBC2FDA00305545 /* UserDetails.swift */,
+				EBC9C6E22BBD3CB40029BC26 /* RepoCell.swift */,
+				EBC9C6E42BBD4BAB0029BC26 /* WebView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -296,11 +302,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB85EDD92BBC280800305545 /* UserCell.swift in Sources */,
+				EBC9C6E52BBD4BAB0029BC26 /* WebView.swift in Sources */,
+				EBC9C6E32BBD3CB40029BC26 /* RepoCell.swift in Sources */,
 				EB85EDD52BBC241E00305545 /* GitHub.swift in Sources */,
 				EB85EDAB2BBC23AD00305545 /* GitHubUsersApp.swift in Sources */,
 				EBC71E9E2BBCE06B0052F28B /* Home.swift in Sources */,
 				EB85EDDB2BBC2FDA00305545 /* UserDetails.swift in Sources */,
-				EBC71EA02BBD0A050052F28B /* GitHubUsers.swift in Sources */,
+				EBC71EA02BBD0A050052F28B /* GitHubModels.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

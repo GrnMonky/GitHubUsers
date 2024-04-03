@@ -52,4 +52,23 @@ struct GitHub {
         }
         
     }
+    
+    struct Repo: Codable, Identifiable {
+        
+        let id: Int
+        let name: String
+        let language: String?
+        let stars: Int
+        let description: String?
+        let url: String
+        let forked: Bool
+        
+        private enum CodingKeys: String, CodingKey {
+            case id,name,language,description
+            case stars = "stargazers_count"
+            case url = "html_url"
+            case forked = "fork"
+        }
+        
+    }
 }

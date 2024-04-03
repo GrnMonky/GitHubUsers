@@ -10,6 +10,7 @@ import SwiftUI
 struct UserDetails: View {
     
     @State var user: GitHub.User
+    @State var repos: [GitHub.Repo] = []
     
     var body: some View {
         VStack {
@@ -27,7 +28,17 @@ struct UserDetails: View {
                 Text("Followers: \(details.followers)")
                 Text("Following: \(details.following)")
             }
-            Spacer()
+            List(repos.filter{$0.forked == false}) { repo in
+                NavigationLink(destination: WebView(url: URL(string: repo.url)!)) {
+                            RepoCell(repo: repo)
+                        }
+            }.task {
+                do {
+                    repos = try await GitHub().getRepos(login: user.login)
+                } catch {
+                    
+                }
+            }
         }.padding().task {
             do {
                 if !(user is GitHub.DeatailedUser) {
