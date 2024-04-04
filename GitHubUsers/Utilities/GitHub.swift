@@ -19,7 +19,7 @@ enum NetworkingError: Error {
 fileprivate struct Networking {
     
     // Function to fetch data from URLSession and decode it into a decodable type
-    static func fromURLSession<T: Decodable>(_ urlString: String) async throws -> (data: T, nextPageLink: URL?) {
+    static func fromURLSession<T: Decodable>(_ urlString: String) async throws -> (data: T, nextPageLink: URL?, prevPageLink: URL?) {
         
         // Convert urlString to URL
         guard let url = URL(string: urlString) else {
@@ -42,14 +42,15 @@ fileprivate struct Networking {
         let decoder = JSONDecoder()
         let result = try decoder.decode(T.self, from: data)
         
-        // Check for the next page link in the response headers
-        let nextPageLink = getNextPageLink(from: response)
+        // Check for the next and previous page links in the response headers
+        let nextPageLink = getNextPageLink(from: response, rel: "next")
+        let prevPageLink = getNextPageLink(from: response, rel: "prev")
         
-        return (result, nextPageLink)
+        return (result, nextPageLink, prevPageLink)
     }
     
     // Helper function to extract the link header from the HTTP response
-    static func getNextPageLink(from response: URLResponse?) -> URL? {
+    static func getNextPageLink(from response: URLResponse?, rel: String) -> URL? {
         guard let httpResponse = response as? HTTPURLResponse,
               let linkHeader = httpResponse.allHeaderFields["Link"] as? String else {
             return nil
@@ -58,13 +59,13 @@ fileprivate struct Networking {
         // Split the link header into individual links
         let links = linkHeader.components(separatedBy: ",")
         
-        // Find the link for the "next" page
+        // Find the link for the specified relation
         for link in links {
             let components = link.components(separatedBy: ";")
             if components.count < 2 { continue }
             let linkValue = components[0].trimmingCharacters(in: .whitespaces)
             let relAttribute = components[1].trimmingCharacters(in: .whitespaces)
-            if relAttribute == "rel=\"next\"" {
+            if relAttribute == "rel=\"\(rel)\"" {
                 let urlStartIndex = linkValue.index(after: linkValue.startIndex)
                 let urlEndIndex = linkValue.index(before: linkValue.endIndex)
                 let urlString = String(linkValue[urlStartIndex..<urlEndIndex])
@@ -80,7 +81,7 @@ fileprivate struct Networking {
 extension GitHub {
     
     // Function to get list of users from GitHub API
-    func getUsers(next: String? = nil) async throws -> ([GitHub.ListUser], URL?) {
+    func getUsers(next: String? = nil) async throws -> (data: [GitHub.ListUser], nextPageLink: URL?, prevPageLink: URL?) {
         return try await Networking.fromURLSession(next ?? GitHubUrl)
     }
     

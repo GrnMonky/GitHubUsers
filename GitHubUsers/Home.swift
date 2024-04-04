@@ -33,17 +33,17 @@ struct ContentView: View {
                 NavigationLink(destination: UserDetails(user: user)) {
                     UserCell(user: user)
                 }.listRowSeparator(.hidden)
-                .task {
-                    // Load more users when reaching the end of the list
-                    if shouldLoadMoreUsers(user) {
-                        loadMoreUsers()
+                    .task {
+                        // Load more users when reaching the end of the list
+                        if shouldLoadMoreUsers(user) {
+                            loadMoreUsers()
+                        }
                     }
-                }
-            }.scrollContentBackground(.hidden)
+            }.scrollContentBackground(.hidden).scrollIndicators(.hidden)
                 .task {
                     // Attempt to fetch GitHub users asynchronously when the view appears
                     do {
-                        let (initialUsers, initialNextPageLink) = try await GitHub().getUsers()
+                        let (initialUsers, initialNextPageLink, _) = try await GitHub().getUsers()
                         users = initialUsers
                         nextPageLink = initialNextPageLink
                     } catch {
@@ -98,7 +98,8 @@ struct ContentView: View {
         // Attempt to fetch more GitHub users asynchronously
         Task {
             do {
-                let (newUsers, newNextPageLink) = try await GitHub().getUsers(next: nextLink.absoluteString)
+                // Fetch new users, next page link, ToDo: Make use of previous page link
+                let (newUsers, newNextPageLink, _) = try await GitHub().getUsers(next: nextLink.absoluteString)
                 users.append(contentsOf: newUsers)
                 nextPageLink = newNextPageLink
             } catch {
