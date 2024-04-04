@@ -23,4 +23,4 @@ Features
 
 ✅ Tapping on a row in the repository list should display the repository's URL in a WebView. <br />
 
-ToDo: Pageinated users list, infinite scroll
+✅ Pageinated users list, infinite scroll
