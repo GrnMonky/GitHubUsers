@@ -56,7 +56,7 @@ final class GitHubUsersTests: XCTestCase {
         
         Task.init {
             do {
-                let user = try await GitHub().getDeatailedUser(login: "octocat")
+                let user = try await GitHub().getDetailedUser(login: "octocat")
                 XCTAssertNotNil(user, "User should not be nil")
                 XCTAssertTrue(user.name == "The Octocat", "There should be at least one user")
             } catch {
