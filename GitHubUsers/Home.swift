@@ -13,6 +13,9 @@ struct ContentView: View {
     // State variable to hold the list of GitHub users
     @State private var users: [GitHub.ListUser] = []
     
+    // State variable to hold the URL for the next page
+    @State private var nextPageLink: URL? = nil
+    
     // State variable to control the presentation of the alert
     @State private var showAlert = false
     
@@ -30,20 +33,24 @@ struct ContentView: View {
                 NavigationLink(destination: UserDetails(user: user)) {
                     UserCell(user: user)
                 }.listRowSeparator(.hidden)
+                .task {
+                    // Load more users when reaching the end of the list
+                    if shouldLoadMoreUsers(user) {
+                        loadMoreUsers()
+                    }
+                }
             }.scrollContentBackground(.hidden)
                 .task {
-                    // Set loading state to true when data fetching starts
-                    isLoading = true
-                    // Attempt to fetch GitHub users asynchronously
+                    // Attempt to fetch GitHub users asynchronously when the view appears
                     do {
-                        users = try await GitHub().getUsers()
+                        let (initialUsers, initialNextPageLink) = try await GitHub().getUsers()
+                        users = initialUsers
+                        nextPageLink = initialNextPageLink
                     } catch {
                         // Handle any errors that occur during fetching
                         errorMessage = error.localizedDescription
                         showAlert = true
                     }
-                    // Set loading state to false when data fetching completes
-                    isLoading = false
                 }
             // Display a loading indicator while data is being fetched
                 .overlay(loadingView(), alignment: .center)
@@ -68,6 +75,39 @@ struct ContentView: View {
             return AnyView(ProgressView())
         } else {
             return AnyView(EmptyView())
+        }
+    }
+    
+    // Function to check if more users should be loaded based on the currently displayed user
+    private func shouldLoadMoreUsers(_ user: GitHub.ListUser) -> Bool {
+        guard let lastUser = users.last else {
+            return false
+        }
+        return user.id == lastUser.id
+    }
+    
+    // Function to load more users
+    private func loadMoreUsers() {
+        guard let nextLink = nextPageLink else {
+            return
+        }
+        
+        // Set loading state to true when data fetching starts
+        isLoading = true
+        
+        // Attempt to fetch more GitHub users asynchronously
+        Task {
+            do {
+                let (newUsers, newNextPageLink) = try await GitHub().getUsers(next: nextLink.absoluteString)
+                users.append(contentsOf: newUsers)
+                nextPageLink = newNextPageLink
+            } catch {
+                // Handle any errors that occur during fetching
+                errorMessage = error.localizedDescription
+                showAlert = true
+            }
+            // Set loading state to false when data fetching completes
+            isLoading = false
         }
     }
 }

@@ -38,7 +38,7 @@ final class GitHubUsersTests: XCTestCase {
         
         Task.init {
             do {
-                let users = try await GitHub().getUsers()
+                let users = try await GitHub().getUsers().0
                 XCTAssertNotNil(users, "Users array should not be nil")
                 XCTAssertTrue(users.count > 0, "There should be at least one user")
             } catch {

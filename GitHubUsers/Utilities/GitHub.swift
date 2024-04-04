@@ -19,7 +19,7 @@ enum NetworkingError: Error {
 fileprivate struct Networking {
     
     // Function to fetch data from URLSession and decode it into a decodable type
-    static func fromURLSession<T: Decodable>(_ urlString: String) async throws -> T {
+    static func fromURLSession<T: Decodable>(_ urlString: String) async throws -> (data: T, nextPageLink: URL?) {
         
         // Convert urlString to URL
         guard let url = URL(string: urlString) else {
@@ -36,13 +36,43 @@ fileprivate struct Networking {
         }
         
         // Fetch data from URLSession
-        let (data, _) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await URLSession.shared.data(for: request)
         
         // Decode data into specified type
         let decoder = JSONDecoder()
         let result = try decoder.decode(T.self, from: data)
         
-        return result
+        // Check for the next page link in the response headers
+        let nextPageLink = getNextPageLink(from: response)
+        
+        return (result, nextPageLink)
+    }
+    
+    // Helper function to extract the link header from the HTTP response
+    static func getNextPageLink(from response: URLResponse?) -> URL? {
+        guard let httpResponse = response as? HTTPURLResponse,
+              let linkHeader = httpResponse.allHeaderFields["Link"] as? String else {
+            return nil
+        }
+        
+        // Split the link header into individual links
+        let links = linkHeader.components(separatedBy: ",")
+        
+        // Find the link for the "next" page
+        for link in links {
+            let components = link.components(separatedBy: ";")
+            if components.count < 2 { continue }
+            let linkValue = components[0].trimmingCharacters(in: .whitespaces)
+            let relAttribute = components[1].trimmingCharacters(in: .whitespaces)
+            if relAttribute == "rel=\"next\"" {
+                let urlStartIndex = linkValue.index(after: linkValue.startIndex)
+                let urlEndIndex = linkValue.index(before: linkValue.endIndex)
+                let urlString = String(linkValue[urlStartIndex..<urlEndIndex])
+                return URL(string: urlString)
+            }
+        }
+        
+        return nil
     }
 }
 
@@ -50,19 +80,19 @@ fileprivate struct Networking {
 extension GitHub {
     
     // Function to get list of users from GitHub API
-    func getUsers() async throws -> [GitHub.ListUser] {
-        return try await Networking.fromURLSession(GitHubUrl)
+    func getUsers(next: String? = nil) async throws -> ([GitHub.ListUser], URL?) {
+        return try await Networking.fromURLSession(next ?? GitHubUrl)
     }
     
     // Function to get detailed information about a user from GitHub API
     func getDetailedUser(login: String) async throws -> DetailedUser {
         let userUrl = "\(GitHubUrl)/\(login)"
-        return try await Networking.fromURLSession(userUrl)
+        return try await Networking.fromURLSession(userUrl).data
     }
     
     // Function to get repositories of a user from GitHub API
     func getRepos(login: String) async throws -> [Repo] {
         let reposUrl = "\(GitHubUrl)/\(login)/repos"
-        return try await Networking.fromURLSession(reposUrl)
+        return try await Networking.fromURLSession(reposUrl).data
     }
 }
