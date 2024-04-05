@@ -25,3 +25,4 @@ Features
 
 ✅ Pageinated users list, infinite scroll <br />
 ✅ Localization
+✅ Searching
