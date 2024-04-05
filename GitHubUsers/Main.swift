@@ -15,8 +15,14 @@ struct Main: View {
         var body: some View {
             NavigationView {
                 VStack {
+                    
                     Toggle("Grid", isOn: $isShowingFirstView)
                         .padding()
+                    
+                    TextField("Search", text: $viewModel.searchText, onCommit: viewModel.loadInitialUsers)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .frame(maxWidth: .infinity)
                     
                     if isShowingFirstView {
                         HomeGrid(viewModel: viewModel)
@@ -26,6 +32,18 @@ struct Main: View {
                 }
             }// Set navigation bar title
             .navigationBarTitle("GitHub Users", displayMode: .inline)
+            .alert(isPresented: $viewModel.showAlert) {
+                Alert(
+                    title: Text("Error"),
+                    message: Text(viewModel.errorMessage),
+                    dismissButton: .default(Text("OK"))
+                )
+            }
+            .onAppear() {
+                if viewModel.users.isEmpty {
+                    viewModel.loadInitialUsers()
+                }
+            }
         }
 }
 

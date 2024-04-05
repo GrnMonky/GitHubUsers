@@ -11,17 +11,13 @@ struct HomeGrid: View {
     // MARK: - Properties
     
     // State variable to hold the list of GitHub users
-    @State var viewModel: HomeVM = HomeVM()
+    var viewModel: HomeVM = HomeVM()
     
     // MARK: - Body
     
     var body: some View {
             ScrollView {
                 LazyVGrid(columns: [GridItem(.adaptive(minimum: 150))], spacing: 16) {
-                    TextField("Search", text: $viewModel.searchText, onCommit: viewModel.loadInitialUsers)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                        .frame(maxWidth: .infinity)
                     
                     ForEach(viewModel.users) { user in
                         NavigationLink(destination: UserDetails(user: user)) {
@@ -45,13 +41,6 @@ struct HomeGrid: View {
                 }
                 // Display a loading indicator while data is being fetched
                 .overlay(loadingView(), alignment: .center)
-            .alert(isPresented: $viewModel.showAlert) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(viewModel.errorMessage),
-                    dismissButton: .default(Text("OK"))
-                )
-            }
         }
     }
     
