@@ -51,6 +51,16 @@
         }
       }
     },
+    "Grid" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "グリッド"
+          }
+        }
+      }
+    },
     "OK" : {
       "localizations" : {
         "ja" : {
