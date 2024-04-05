@@ -96,4 +96,22 @@ extension GitHub {
         let reposUrl = "\(GitHubUrl)/\(login)/repos"
         return try await Networking.fromURLSession(reposUrl).data
     }
+    
+    // Function to search for users by username or email from GitHub API
+    func searchUsers(query: String) async throws -> (data: [GitHub.ListUser], nextPageLink: URL?, prevPageLink: URL?) {
+        struct SearchModel: Decodable {
+            let items: [GitHub.ListUser]
+        }
+        let result: (data: SearchModel, nextPageLink: URL?, prevPageLink: URL?) = try await Networking.fromURLSession("https://api.github.com/search/users?q=\(query)")
+        return (data: result.data.items, result.nextPageLink, result.prevPageLink)
+    }
+    
+    // Function to search for users by username or email from GitHub API using the provided URL
+    func searchUsers(next: URL) async throws -> (data: [GitHub.ListUser], nextPageLink: URL?, prevPageLink: URL?) {
+        struct SearchModel: Decodable {
+            let items: [GitHub.ListUser]
+        }
+        let result: (data: SearchModel, nextPageLink: URL?, prevPageLink: URL?) = try await Networking.fromURLSession(next.absoluteString)
+        return (data: result.data.items, result.nextPageLink, result.prevPageLink)
+    }
 }

@@ -25,37 +25,44 @@ struct ContentView: View {
     // State variable to track loading state
     @State private var isLoading = false
     
+    // State variable to hold the search query
+    @State private var searchText = ""
+    
     // MARK: - Body
     
     var body: some View {
         NavigationView {
-            List(users) { user in
-                NavigationLink(destination: UserDetails(user: user)) {
-                    UserCell(user: user)
-                }.listRowSeparator(.hidden)
+            VStack {
+                // Search bar
+                TextField("Search", text: $searchText, onCommit: loadInitialUsers)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                
+                // List of GitHub users
+                List(users) { user in
+                    NavigationLink(destination: UserDetails(user: user)) {
+                        UserCell(user: user)
+                    }
+                    .listRowSeparator(.hidden)
                     .task {
                         // Load more users when reaching the end of the list
                         if shouldLoadMoreUsers(user) {
-                            loadMoreUsers()
+                            await loadMoreUsers()
                         }
                     }
-            }.scrollContentBackground(.hidden).scrollIndicators(.hidden)
-                .task {
-                    // Attempt to fetch GitHub users asynchronously when the view appears
-                    do {
-                        let (initialUsers, initialNextPageLink, _) = try await GitHub().getUsers()
-                        users = initialUsers
-                        nextPageLink = initialNextPageLink
-                    } catch {
-                        // Handle any errors that occur during fetching
-                        errorMessage = error.localizedDescription
-                        showAlert = true
+                }
+                .scrollContentBackground(.hidden)
+                .scrollIndicators(.hidden)
+                .onAppear() {
+                    if users.isEmpty {
+                        loadInitialUsers()
                     }
                 }
-            // Display a loading indicator while data is being fetched
+                // Display a loading indicator while data is being fetched
                 .overlay(loadingView(), alignment: .center)
+            }
             // Set navigation bar title
-                .navigationBarTitle("GitHub Users", displayMode: .inline)
+            .navigationBarTitle("GitHub Users", displayMode: .inline)
         }
         .alert(isPresented: $showAlert) {
             Alert(
@@ -87,7 +94,7 @@ struct ContentView: View {
     }
     
     // Function to load more users
-    private func loadMoreUsers() {
+    private func loadMoreUsers() async {
         guard let nextLink = nextPageLink else {
             return
         }
@@ -96,19 +103,47 @@ struct ContentView: View {
         isLoading = true
         
         // Attempt to fetch more GitHub users asynchronously
-        Task {
-            do {
-                // Fetch new users, next page link, ToDo: Make use of previous page link
-                let (newUsers, newNextPageLink, _) = try await GitHub().getUsers(next: nextLink.absoluteString)
+        do {
+            var newUsers: [GitHub.ListUser]?
+            var newNextPageLink: URL?
+            // Fetch new users, next page link, ToDo: Make use of previous page link
+            if searchText.isEmpty {
+                (newUsers, newNextPageLink, _) = try await GitHub().getUsers(next: nextLink.absoluteString)
+            } else {
+                (newUsers, newNextPageLink, _) = try await GitHub().searchUsers(next: nextLink)
+            }
+            
+            if let newUsers = newUsers {
                 users.append(contentsOf: newUsers)
-                nextPageLink = newNextPageLink
+            }
+            nextPageLink = newNextPageLink
+        } catch {
+            // Handle any errors that occur during fetching
+            errorMessage = error.localizedDescription
+            showAlert = true
+        }
+        // Set loading state to false when data fetching completes
+        isLoading = false
+    }
+    
+    fileprivate func loadInitialUsers() {
+        // Fetch initial GitHub users asynchronously when the view appears
+        Task {
+            do{
+                if searchText.isEmpty {
+                    let (initialUsers, initialNextPageLink, _) = try await GitHub().getUsers()
+                    users = initialUsers
+                    nextPageLink = initialNextPageLink
+                } else {
+                    let (searchResults, nextPageLink, _) = try await GitHub().searchUsers(query: searchText)
+                    users = searchResults
+                    self.nextPageLink = nextPageLink
+                }
             } catch {
-                // Handle any errors that occur during fetching
+                // Handle any errors that occur during search
                 errorMessage = error.localizedDescription
                 showAlert = true
             }
-            // Set loading state to false when data fetching completes
-            isLoading = false
         }
     }
 }

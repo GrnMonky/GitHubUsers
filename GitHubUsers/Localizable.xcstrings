@@ -60,6 +60,16 @@
           }
         }
       }
+    },
+    "Search" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "検索"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"
