@@ -80,6 +80,16 @@
           }
         }
       }
+    },
+    "Slow" : {
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "遅い"
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

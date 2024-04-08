@@ -10,6 +10,7 @@ import SwiftUI
 struct ContentView: View {
     // MARK: - Properties
     
+    var namespace : Namespace.ID
     // State variable to hold the list of GitHub users
     var viewModel: HomeVM = HomeVM()
     
@@ -22,6 +23,7 @@ struct ContentView: View {
                     NavigationLink(destination: UserDetails(user: user)) {
                         UserCell(user: user)
                     }
+                    .matchedGeometryEffect(id: user.id, in: namespace)
                     .listRowSeparator(.hidden)
                     .task {
                         // Load more users when reaching the end of the list
@@ -53,5 +55,6 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    @Namespace var namespace
+    return ContentView(namespace: namespace)
 }

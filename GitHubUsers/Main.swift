@@ -10,41 +10,49 @@ import SwiftUI
 struct Main: View {
     @State private var isShowingFirstView = false
     
+    @Namespace var mainNamespace
+    
     @State private var viewModel: HomeVM = HomeVM()
         
-        var body: some View {
-            NavigationView {
-                VStack {
+    var body: some View {
+        NavigationView {
+            VStack {
+                
+                HStack {
                     
-                    Toggle("Grid", isOn: $isShowingFirstView)
-                        .padding()
                     
-                    TextField("Search", text: $viewModel.searchText, onCommit: viewModel.loadInitialUsers)
-                        .textFieldStyle(RoundedBorderTextFieldStyle())
-                        .padding()
-                        .frame(maxWidth: .infinity)
+                    Toggle("Grid", isOn: $isShowingFirstView.animation())
                     
-                    if isShowingFirstView {
-                        HomeGrid(viewModel: viewModel)
-                    } else {
-                        ContentView(viewModel: viewModel)
-                    }
+                    Button("Slow") { withAnimation(.easeInOut(duration: 1.0)) { isShowingFirstView.toggle() } }
                 }
-            }// Set navigation bar title
-            .navigationBarTitle("GitHub Users", displayMode: .inline)
-            .alert(isPresented: $viewModel.showAlert) {
-                Alert(
-                    title: Text("Error"),
-                    message: Text(viewModel.errorMessage),
-                    dismissButton: .default(Text("OK"))
-                )
+                .padding()
+                
+                TextField("Search", text: $viewModel.searchText, onCommit: viewModel.loadInitialUsers)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
+                    .frame(maxWidth: .infinity)
+                
+                if isShowingFirstView {
+                    HomeGrid(namespace: mainNamespace, viewModel: viewModel)
+                } else {
+                    ContentView(namespace: mainNamespace, viewModel: viewModel)
+                }
             }
-            .onAppear() {
-                if viewModel.users.isEmpty {
-                    viewModel.loadInitialUsers()
-                }
+        }// Set navigation bar title
+        .navigationBarTitle("GitHub Users", displayMode: .inline)
+        .alert(isPresented: $viewModel.showAlert) {
+            Alert(
+                title: Text("Error"),
+                message: Text(viewModel.errorMessage),
+                dismissButton: .default(Text("OK"))
+            )
+        }
+        .onAppear() {
+            if viewModel.users.isEmpty {
+                viewModel.loadInitialUsers()
             }
         }
+    }
 }
 
 #Preview {

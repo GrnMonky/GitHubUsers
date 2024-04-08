@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeGrid: View {
     // MARK: - Properties
+    var namespace : Namespace.ID
     
     // State variable to hold the list of GitHub users
     var viewModel: HomeVM = HomeVM()
@@ -23,6 +24,7 @@ struct HomeGrid: View {
                         NavigationLink(destination: UserDetails(user: user)) {
                             UserCell(user: user)
                         }
+                        .matchedGeometryEffect(id: user.id, in: namespace)
                         .listRowSeparator(.hidden)
                         .task {
                             // Load more users when reaching the end of the list
@@ -56,5 +58,6 @@ struct HomeGrid: View {
 }
 
 #Preview {
-    HomeGrid()
+    @Namespace var namespace
+    return HomeGrid(namespace: namespace)
 }

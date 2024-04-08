@@ -27,3 +27,4 @@ Features
 ✅ Localization <br />
 ✅ Searching <br />
 ✅ Switch to ViewModel <br />
+✅ Animation <br />
